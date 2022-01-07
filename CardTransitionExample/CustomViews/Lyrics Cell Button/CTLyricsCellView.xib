@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CTLyricsCellView" customModule="CardTransitionExample" customModuleProvider="target">
+            <connections>
+                <outlet property="contentView" destination="iN0-l3-epB" id="sjU-Hi-Tit"/>
+                <outlet property="iconImageView" destination="atW-y3-lO3" id="GO2-Cq-Idu"/>
+                <outlet property="titleLabel" destination="aPW-aL-Gpk" id="tqh-h0-aeb"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="377"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="singer" translatesAutoresizingMaskIntoConstraints="NO" id="atW-y3-lO3">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="377"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lyrics" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPW-aL-Gpk">
+                    <rect key="frame" x="24" y="324" width="73" height="29"/>
+                    <fontDescription key="fontDescription" type="system" weight="black" pointSize="24"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="atW-y3-lO3" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="6aj-vl-25Z"/>
+                <constraint firstAttribute="bottom" secondItem="atW-y3-lO3" secondAttribute="bottom" id="81P-Ma-xnb"/>
+                <constraint firstAttribute="trailing" secondItem="atW-y3-lO3" secondAttribute="trailing" id="8Tb-Qy-m3r"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="aPW-aL-Gpk" secondAttribute="bottom" constant="24" id="HjQ-er-7zn"/>
+                <constraint firstItem="atW-y3-lO3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Y9O-7r-ktq"/>
+                <constraint firstItem="aPW-aL-Gpk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="24" id="h6Y-OS-2QQ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="42.028985507246382" y="-55.245535714285715"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="singer" width="166.66667175292969" height="111"/>
+    </resources>
+</document>

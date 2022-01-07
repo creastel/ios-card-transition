@@ -1,0 +1,103 @@
+//
+//  CTLyricsCellView.swift
+//  CardTransitionExample
+//
+//  Created by Jean Haberer on 09/12/2020.
+//
+//  Copyright (c) 2021 Creastel CTL <hello@creastel.com>
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
+import UIKit
+
+class CTLyricsCellView: UIView {
+    
+    var didTouchUpInside: (() -> Void)?
+    
+    // MARK: @IBOutlets
+    
+    @IBOutlet var contentView: UIView!
+    @IBOutlet var iconImageView: UIImageView!
+    @IBOutlet var titleLabel: UILabel!
+    
+    // MARK: Overrides
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        touchStartedAnimation(touched: true)
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchStartedAnimation(touched: false)
+        super.touchesEnded(touches, with: event)
+        didTouchUpInside?()
+    }
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchStartedAnimation(touched: false)
+        super.touchesCancelled(touches, with: event)
+    }
+
+    // MARK: Initialization
+
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        commonInit()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        commonInit()
+    }
+    
+    // MARK: Private Methods
+
+    private func commonInit() {
+        Bundle.main.loadNibNamed("CTLyricsCellView", owner: self, options: nil)
+        addSubview(contentView)
+        self.backgroundColor = .clear
+        contentView.frame = self.bounds
+        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        iconImageView.layer.cornerRadius = 12
+        iconImageView.layer.borderWidth = 1
+        iconImageView.layer.borderColor = UIColor.systemGray.withAlphaComponent(0.1).cgColor
+        contentView.layer.shadowRadius = 12
+        contentView.layer.shadowOpacity = 1
+        contentView.layer.shadowOffset = .zero
+        contentView.layer.shadowColor = UIColor.systemFill.cgColor
+    }
+    
+    private func touchStartedAnimation(touched: Bool) {
+        UIView.animate(
+            withDuration: 0.2,
+            delay: 0,
+            usingSpringWithDamping: 1,
+            initialSpringVelocity: 0,
+            options: .allowUserInteraction,
+            animations: {
+                if touched {
+                    self.layer.shadowRadius = 8
+                    self.transform = CGAffineTransform.identity.scaledBy(x: 0.93, y: 0.93)
+                } else {
+                    self.layer.shadowRadius = 16
+                    self.transform = .identity
+                }
+            }
+        )
+    }
+}
+
