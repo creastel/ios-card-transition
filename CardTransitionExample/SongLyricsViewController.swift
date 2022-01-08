@@ -59,7 +59,7 @@ class SongLyricsViewController: UIViewController {
 
 extension SongLyricsViewController: CSCardPresentedView {
     
-    /// Presenting the View
+    // Presenting the View
     func cardPresentedViewDidUpdatePresentingTransition(progress: CGFloat) {
         viewContainer.layer.cornerRadius = 12-progress*12
         lyricsCellView.titleLabel.font = lyricsCellView.titleLabel.font.withSize(24+progress*24)
@@ -69,7 +69,7 @@ extension SongLyricsViewController: CSCardPresentedView {
         lyricsCellView.titleLabel.font = lyricsCellView.titleLabel.font.withSize(48)
     }
     
-    /// Dismissing the view
+    // Dismissing the view
     func cardPresentedViewWillCancelDismissing() {
         cardPresentedViewWillEndPresenting()
     }
@@ -82,7 +82,7 @@ extension SongLyricsViewController: CSCardPresentedView {
         lyricsCellView.titleLabel.font = lyricsCellView.titleLabel.font.withSize(24)
     }
     
-    /// Update Bar Style
+    // Update Bar Style
     func cardPresentedViewShouldUpdateBar(to style: UIStatusBarStyle) {
         currentStatusBarStyle = style
         setNeedsStatusBarAppearanceUpdate()

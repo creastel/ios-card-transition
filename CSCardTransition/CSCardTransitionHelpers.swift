@@ -1,5 +1,5 @@
 //
-//  Helpers.swift
+//  CSCardTransitionHelpers.swift
 //  CSCardTransition
 //
 //  Created by Jean Haberer on 02/12/2020.

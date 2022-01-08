@@ -23,13 +23,12 @@
 		CA588D012581027200745A47 /* CTSongCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA588D002581027200745A47 /* CTSongCellView.xib */; };
 		CA588D052581074C00745A47 /* CTSongCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA588D042581074C00745A47 /* CTSongCellView.swift */; };
 		CA588D092581075500745A47 /* CTLyricsCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA588D082581075500745A47 /* CTLyricsCellView.swift */; };
-		CA6347A0257F834F008D48CD /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA63479F257F834F008D48CD /* Helpers.swift */; };
-		CA8DD192257EC26100D33E46 /* CSCardTransition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3220B525779C4F0099C648 /* CSCardTransition.framework */; };
-		CA8DD193257EC26100D33E46 /* CSCardTransition.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CA3220B525779C4F0099C648 /* CSCardTransition.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CA6347A0257F834F008D48CD /* CSCardTransitionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA63479F257F834F008D48CD /* CSCardTransitionHelpers.swift */; };
 		CA8DD19A257EC2C000D33E46 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8DD199257EC2C000D33E46 /* SceneDelegate.swift */; };
 		CABBD2B92581140900188DA5 /* SongListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABBD2B82581140900188DA5 /* SongListViewController.swift */; };
 		CABBD2C525811C6500188DA5 /* SongPresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABBD2C425811C6500188DA5 /* SongPresentationViewController.swift */; };
 		CAC01A68258132DB0056564C /* SongLyricsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC01A67258132DB0056564C /* SongLyricsViewController.swift */; };
+		CAFF65602788CF69007CD657 /* CSCardTransition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3220B525779C4F0099C648 /* CSCardTransition.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +55,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CA8DD193257EC26100D33E46 /* CSCardTransition.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,7 +83,7 @@
 		CA588D002581027200745A47 /* CTSongCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CTSongCellView.xib; sourceTree = "<group>"; };
 		CA588D042581074C00745A47 /* CTSongCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTSongCellView.swift; sourceTree = "<group>"; };
 		CA588D082581075500745A47 /* CTLyricsCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTLyricsCellView.swift; sourceTree = "<group>"; };
-		CA63479F257F834F008D48CD /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		CA63479F257F834F008D48CD /* CSCardTransitionHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CSCardTransitionHelpers.swift; sourceTree = "<group>"; };
 		CA8DD199257EC2C000D33E46 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CABBD2B82581140900188DA5 /* SongListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongListViewController.swift; sourceTree = "<group>"; };
 		CABBD2C425811C6500188DA5 /* SongPresentationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongPresentationViewController.swift; sourceTree = "<group>"; };
@@ -112,7 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA8DD192257EC26100D33E46 /* CSCardTransition.framework in Frameworks */,
+				CAFF65602788CF69007CD657 /* CSCardTransition.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,7 +141,7 @@
 		CA3220B725779C4F0099C648 /* CSCardTransition */ = {
 			isa = PBXGroup;
 			children = (
-				CA63479F257F834F008D48CD /* Helpers.swift */,
+				CA63479F257F834F008D48CD /* CSCardTransitionHelpers.swift */,
 				CA3220FC25779EF20099C648 /* CSCardTransitionableView.swift */,
 				CA3221042577A0660099C648 /* CSCardTransitionAnimator.swift */,
 				CA3221092577A06E0099C648 /* CSCardTransitionInteractor.swift */,
@@ -378,7 +376,7 @@
 				CA3220ED25779DF10099C648 /* CSCardTransition.swift in Sources */,
 				CA3221052577A0660099C648 /* CSCardTransitionAnimator.swift in Sources */,
 				CA32210A2577A06E0099C648 /* CSCardTransitionInteractor.swift in Sources */,
-				CA6347A0257F834F008D48CD /* Helpers.swift in Sources */,
+				CA6347A0257F834F008D48CD /* CSCardTransitionHelpers.swift in Sources */,
 				CA3220FD25779EF20099C648 /* CSCardTransitionableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

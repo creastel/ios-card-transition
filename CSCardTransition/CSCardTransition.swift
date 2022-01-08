@@ -28,6 +28,18 @@ import UIKit
 
 public class CSCardTransition {
     
+    /// Returns the Card Transition Animation Controller if the transition
+    /// is set up and enabled.
+    /// Use this method to swizzle your Navigation Controller.
+    ///
+    /// - Parameters:
+    ///     - navigationController: The current *navigationController*.
+    ///     - animationControllerFor: The current transition *operation*.
+    ///     - from: The current *View Controller*.
+    ///     - to: The *View Controller* to be presented.
+    ///
+    /// - Returns: An *UIViewControllerAnimatedTransitioning* to be used for the Card Transition.
+    ///
     public static func navigationController(
         _ navigationController: UINavigationController,
         animationControllerFor operation: UINavigationController.Operation,
@@ -55,6 +67,16 @@ public class CSCardTransition {
         return nil
     }
 
+    /// Called by your Navigation Controller to allow the delegate to return the
+    /// interactive animator object for use during Card Transition.
+    /// Use this method to swizzle your Navigation Controller.
+    ///
+    /// - Parameters:
+    ///     - navigationController: The current *navigationController*.
+    ///     - interactionControllerFor: The current *animationController*.
+    ///
+    /// - Returns: The Card Transition's *UIViewControllerInteractiveTransitioning* interactor if interaction is in progress, nil otherwise.
+    ///
     public static func navigationController(
         _ navigationController: UINavigationController,
         interactionControllerFor animationController: UIViewControllerAnimatedTransitioning

@@ -43,10 +43,10 @@ class SongPresentationViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     
-    /// Constraints for small View
+    // Constraints for small View
     @IBOutlet var smallConstraints: [NSLayoutConstraint]!
     
-    /// Constraints for big View
+    // Constraints for big View
     @IBOutlet var bigConstraints: [NSLayoutConstraint]!
     
     // MARK: Overrides
@@ -142,7 +142,7 @@ extension SongPresentationViewController: CSCardViewPresenter {
         return lyricsCellView
     }
 
-    /// Update Bar Style
+    // Update Bar Style
     func cardViewPresenterShouldUpdateBar(to style: UIStatusBarStyle) {
         currentStatusBarStyle = style
         setNeedsStatusBarAppearanceUpdate()

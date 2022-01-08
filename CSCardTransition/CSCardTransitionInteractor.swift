@@ -46,6 +46,15 @@ public class CSCardTransitionInteractor: UIPercentDrivenInteractiveTransition {
 
     // MARK: - Life Cycle
     
+    /**
+         Initializes a new Card Transition Interactor.
+         Should be attached to the presented View Controller to enable the card transition pop gestures.
+
+         - Parameters:
+            - viewController: The *UIViewController* parent of the Interactor.
+
+         - Returns: A new Card Transition Interactor.
+         */
     public init(viewController: UIViewController) {
         self.viewController = viewController
         super.init()
