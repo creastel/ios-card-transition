@@ -1,4 +1,11 @@
 # CSCardTransition
+
+[![Version](https://img.shields.io/cocoapods/v/CSCardTransition.svg)](http://cocoapods.org/pods/CSCardTransition)
+![Xcode 10.0+](https://img.shields.io/badge/Xcode-10.0%2B-blue.svg)
+![iOS 10.0+](https://img.shields.io/badge/iOS-10.0%2B-blue.svg)
+![Swift 5.0+](https://img.shields.io/badge/Swift-5.0%2B-blue.svg)
+[![License](https://img.shields.io/cocoapods/l/CSCardTransition.svg)](https://github.com/appssemble/CSCardTransition/blob/master/LICENSE?raw=true)
+
 **CSCardTransition** is a small library allowing you to create wonderful `push` and `pop` transition animations like in the App Store. 
 It works side by side with your navigation controller, and ensure that you only code what's necessary for your custom transition.
 You can use _CocoaPod_ to add this library to your project.
