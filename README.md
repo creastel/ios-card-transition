@@ -1,7 +1,7 @@
 # CSCardTransition
-CSCardTransition is a small library allowing you to create a wonderful 'push' and 'pop' transition animation like in the AppStore. 
+**CSCardTransition** is a small library allowing you to create wonderful `push` and `pop` transition animations like in the AppStore. 
 It works perfecty well with a navigation controller, and ensure that you only code what's necessary for your custom transition.
-You can use CocoaPod to add this library to your project.
+You can use _CocoaPod_ to add this library to your project.
 
 <table>
   <tr>
@@ -17,10 +17,10 @@ You can use CocoaPod to add this library to your project.
 
 ## How to implement the transition in your project?
 
-After creating a "Card Presenter" View Controller and your "Presented Card" View Controller, you will simply need to follow this steps:
+After creating a _"Card Presenter"_ View Controller and your _"Presented Card"_ View Controller, you will simply need to follow this steps:
 
 ### Card View Presenter (Required step)
-In the View Controller that serves as the view "Presenter", in other word, in the View Controller that contains the card to be expanded, you will need to add the CSCardViewPresenter protocol:
+In the View Controller that serves as the view "Presenter", in other word, in the View Controller that contains the card to be expanded, you will need to add the `CSCardViewPresenter` protocol:
 ``` swift
 extension YourViewController: CSCardViewPresenter {
     var cardViewPresenterCard: UIView? {
@@ -29,7 +29,7 @@ extension YourViewController: CSCardViewPresenter {
 }
 ```
 ### Presented Card View (Required step)
-In the View Controller that serves as the "Presented" card view, in other word, in the View Controller that is the expanded Card View, you will need to define a CSCardTransitionInteractor and add the CSCardPresentedView protocol:
+In the View Controller that serves as the "Presented" card view, in other word, in the View Controller that is the expanded Card View, you will need to define a `CSCardTransitionInteractor` and add the `CSCardPresentedView` protocol:
 ``` swift
 class YourViewController: UIViewController {
     ...
@@ -44,7 +44,7 @@ extension YourViewController: CSCardPresentedView {
 
 ### Status Bar Style Transition (Optional step)
 
-If your status bar style is different from one view to the other, you will need to implement the `cardViewPresenterShouldUpdateBar(to style: UIStatusBarStyle)` protocol in the presenter and the presented view controller so that the transition stays smooth. To do so, you may want to add a new var that determines the current status bar style like in the following example:
+If your status bar style is different from one view to the other, you will need to implement the `cardViewPresenterShouldUpdateBar(to style: UIStatusBarStyle)` protocol **in the Card Presenter View Controller** and **in the Presented Card View Controller** so that the transition stays smooth. To do so, you may want to add a new var that determines the current status bar style like in the following example:
 
 ``` swift
 class YourViewController: UIViewController {
@@ -127,6 +127,6 @@ A `CSCardPresentedView` can also be a `CSCardViewPresenter`, that is what makes 
 
 ## Informations
 
-This library is brought to you by <b>[Creastel](https://creas.tel)</b> with love.
+This library is brought to you by <b>[Creastel](https://creas.tel)</b>.
 <br/>
 You can reach us at [hello@creastel.com](mailto:hello@creastel.com).
