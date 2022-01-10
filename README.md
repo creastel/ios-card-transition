@@ -4,7 +4,7 @@
 ![Xcode 10.0+](https://img.shields.io/badge/Xcode-10.0%2B-blue.svg)
 ![iOS 10.0+](https://img.shields.io/badge/iOS-10.0%2B-blue.svg)
 ![Swift 5.0+](https://img.shields.io/badge/Swift-5.0%2B-blue.svg)
-[![License](https://img.shields.io/cocoapods/l/CSCardTransition.svg)](https://github.com/appssemble/CSCardTransition/blob/master/LICENSE?raw=true)
+[![License](https://img.shields.io/cocoapods/l/CSCardTransition.svg)](https://github.com/Creastel/ios-card-transition/blob/main/LICENSE)
 
 **CSCardTransition** is a small library allowing you to create wonderful `push` and `pop` transition animations like in the App Store. 
 It works side by side with your navigation controller, and ensure that you only code what's necessary for your custom transition.
@@ -134,6 +134,6 @@ A `CSCardPresentedView` can also be a `CSCardViewPresenter`, that is what makes 
 
 ## Informations
 
-This library is brought to you by <b>[Creastel](https://creas.tel)</b>.
+This library is brought to you by <b>[Creastel](https://creastel.com)</b>.
 <br/>
 You can reach us at [hello@creastel.com](mailto:hello@creastel.com).
