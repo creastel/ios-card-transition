@@ -1,9 +1,19 @@
 # CSCardTransition
 CSCardTransition is a small library allowing you to create a wonderful 'push' and 'pop' transition animation like in the AppStore. 
 It works perfecty well with a navigation controller, and ensure that you only code what's necessary for your custom transition.
-You can use cocoapod to add this library to your project.
+You can use CocoaPod to add this library to your project.
 
-<img src="https://user-images.githubusercontent.com/25668948/148649687-4dbd1371-89f4-4943-a619-d89b45168925.gif" width="200"/>
+<table>
+  <tr>
+    <td><a href="https://github.com/Creastel/CSCardTransition">CSCardTransitionExample</a></td>
+     <td><a href="https://creas.tel/ontime">On Time - Available on the App Store</a></td>
+  </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/25668948/148649687-4dbd1371-89f4-4943-a619-d89b45168925.gif" width=270></td>
+    <td><img src="https://user-images.githubusercontent.com/25668948/148735697-cfff7415-7969-4f18-a510-3101519705c6.gif" width=270></td>
+  </tr>
+</table>
+
 
 ## How to implement the transition in your project?
 
@@ -19,7 +29,7 @@ extension YourViewController: CSCardViewPresenter {
 }
 ```
 ### Presented Card View (Required step)
-In the View Controller that serves as the "Presented" card view, in other word, in the View Controller that is the expanded Card View, you will need to add the CSCardPresentedView protocol:
+In the View Controller that serves as the "Presented" card view, in other word, in the View Controller that is the expanded Card View, you will need to define a CSCardTransitionInteractor and add the CSCardPresentedView protocol:
 ``` swift
 class YourViewController: UIViewController {
     ...
@@ -34,7 +44,7 @@ extension YourViewController: CSCardPresentedView {
 
 ### Status Bar Style Transition (Optional step)
 
-If your status bar style is different from one view to the other, you will need to implement the `cardViewPresenterShouldUpdateBar(to style: UIStatusBarStyle)` protocol in the presenter and the presented view controller so that the transition stays smooth. To do so, you may want to add a var that determines the current status bar style like in the following example:
+If your status bar style is different from one view to the other, you will need to implement the `cardViewPresenterShouldUpdateBar(to style: UIStatusBarStyle)` protocol in the presenter and the presented view controller so that the transition stays smooth. To do so, you may want to add a new var that determines the current status bar style like in the following example:
 
 ``` swift
 class YourViewController: UIViewController {
@@ -55,7 +65,7 @@ extension YourViewController: CSCardViewPresenter // Do the same for the CSCardP
 ```
 
 ### Custom transition in the View Presenter (Optional step)
-You may want to custom you transition by disabling/enabling layout constraints, changing view's alpha, corner radius, ... You can do so by implementing the following methods. You can read the code example to have some ideas.
+You may want to customize you transition by disabling/enabling layout constraints, changing view's alpha, corner radius, ... You can do so by implementing the following methods. You can read the code example to have some ideas.
 
 ``` swift
 extension YourViewController: CSCardViewPresenter {
@@ -82,7 +92,7 @@ extension YourViewController: CSCardViewPresenter {
 ```
 
 ### Custom transition in the Presented view (Optional step)
-You may want to custom you transition by disabling/enabling layout constraints, changing view's alpha, corner radius, ... You may also want to disable the card transition at some point for some reasons.
+You may want to customize you transition by disabling/enabling layout constraints, changing view's alpha, corner radius, ... You may also want to disable the card transition at some point for some reason.
 You can do so by implementing the following methods. You can read the code example to have some ideas.
 
 ``` swift
@@ -91,24 +101,24 @@ extension YourViewController: CSCardPresentedView {
     var cardTransitionEnabled: Bool { get }
         
     /// Called when the transition to this view controller just started.
-    func cardPresentedViewDidStartPresenting()
+    func cardPresentedViewDidStartPresenting() {}
     /// Called when the transition to this view controller is currently in progress
     /// - Parameter progress: The current progress of the transition (between 0 and 1)
-    func cardPresentedViewDidUpdatePresentingTransition(progress: CGFloat)
+    func cardPresentedViewDidUpdatePresentingTransition(progress: CGFloat) {}
     /// Called when the transition to this view controller is about to end.
-    func cardPresentedViewWillEndPresenting()
+    func cardPresentedViewWillEndPresenting() {}
         
     /// Called when the transition back to the parent view controller is about to start.
-    func cardPresentedViewWillStartDismissing()
+    func cardPresentedViewWillStartDismissing() {}
     /// Called when the transition back to the parent view controller has started.
-    func cardPresentedViewDidStartDismissing()
+    func cardPresentedViewDidStartDismissing() {}
     /// Called when the transition back to the parent view controller is about to be canceled.
-    func cardPresentedViewWillCancelDismissing()
+    func cardPresentedViewWillCancelDismissing() {}
     /// Called when the transition back to the parent view controller is currently in progress.
     /// - Parameter progress: The current progress of the transition (between 0 and 1)
-    func cardPresentedViewDidUpdateDismissingTransition(progress: CGFloat)
+    func cardPresentedViewDidUpdateDismissingTransition(progress: CGFloat) {}
     /// Called when the transition back to the parent view controller is about to be completed.
-    func cardPresentedViewWillEndDismissing()
+    func cardPresentedViewWillEndDismissing() {}
 }
 ```
 
