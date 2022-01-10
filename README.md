@@ -17,7 +17,7 @@ You can use CocoaPod to add this library to your project.
 
 ## How to implement the transition in your project?
 
-After creating your card view and your View Controllers, you will simply need to follow this steps:
+After creating a "Card Presenter" View Controller and your "Presented Card" View Controller, you will simply need to follow this steps:
 
 ### Card View Presenter (Required step)
 In the View Controller that serves as the view "Presenter", in other word, in the View Controller that contains the card to be expanded, you will need to add the CSCardViewPresenter protocol:
@@ -122,5 +122,11 @@ extension YourViewController: CSCardPresentedView {
 }
 ```
 
-## Notes
-A View Presenter can also be a Presented View, that is what makes this library powerful ;)
+### Good to know
+A `CSCardPresentedView` can also be a `CSCardViewPresenter`, that is what makes this library powerful ;)
+
+## Informations
+
+This library is brought to you by <b>[Creastel](https://creas.tel)</b> with love.
+<br/>
+You can reach us at [hello@creastel.com](mailto:hello@creastel.com).
