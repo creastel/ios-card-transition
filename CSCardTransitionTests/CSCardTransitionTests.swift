@@ -5,6 +5,9 @@
 //  Created by Jean Haberer on 02/12/2020.
 //
 
+// TODO: Integration and Unit tests must be done on the library
+
+
 import XCTest
 @testable import CSCardTransition
 

@@ -52,7 +52,8 @@ public class CSCardTransition {
             let fromVC = fromVC as? CSCardViewPresenter,
             let fromCard = fromVC.cardViewPresenterCard,
             let toVC = toVC as? CSCardPresentedView,
-            toVC.cardTransitionEnabled
+            toVC.cardTransitionEnabled,
+            fromVC.cardViewPresenterCard != nil
         {
             return CSCardTransitionAnimation(operation: operation, interactor: toVC.cardTransitionInteractor, cardViewPresenterCard: fromCard)
         } else if
@@ -60,7 +61,8 @@ public class CSCardTransition {
             let toVC = toVC as? CSCardViewPresenter,
             let toCard = toVC.cardViewPresenterCard,
             let fromVC = fromVC as? CSCardPresentedView,
-            fromVC.cardTransitionEnabled
+            fromVC.cardTransitionEnabled,
+            toVC.cardViewPresenterCard != nil
         {
             return CSCardTransitionAnimation(operation: operation, interactor: fromVC.cardTransitionInteractor, cardViewPresenterCard: toCard)
         }
