@@ -8,11 +8,12 @@
 
 **CSCardTransition** is a small library allowing you to create wonderful `push` and `pop` transition animations like in the App Store. 
 It works side by side with your navigation controller, and ensure that you only code what's necessary for your custom transition.
-You can use _CocoaPod_ to add this library to your project.
+
+## Screenshots
 
 <table>
   <tr>
-    <td><a href="https://github.com/Creastel/CSCardTransition">CSCardTransitionExample</a></td>
+    <td><a href="https://github.com/Creastel/CSCardTransition">Library Example</a></td>
      <td><a href="https://creas.tel/ontime">On Time - Available on the App Store</a></td>
   </tr>
   <tr>
@@ -22,7 +23,19 @@ You can use _CocoaPod_ to add this library to your project.
 </table>
 
 
-## How to implement the transition in your project?
+## Installation
+
+### CocoaPod
+Add this line to your Podfile.
+
+``` podfile
+pod 'CSCardTransition'
+```
+
+### Manually
+Drag the files inside the CSCardTransition folder into your project.
+
+## Usage
 
 After creating a _"Card Presenter"_ View Controller and your _"Presented Card"_ View Controller, you will simply need to follow this steps:
 
