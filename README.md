@@ -28,7 +28,7 @@ It works side by side with your navigation controller, and ensure that you only 
 ### CocoaPod
 Add this line to your Podfile.
 
-``` podfile
+``` ruby
 pod 'CSCardTransition'
 ```
 
