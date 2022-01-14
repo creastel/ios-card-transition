@@ -1,4 +1,6 @@
+![Github Banner - CSCardTransition](https://user-images.githubusercontent.com/25668948/149535108-b6777860-466e-4e23-9410-83bf0bbe57ab.jpg)
 # CSCardTransition
+
 
 [![Version](https://img.shields.io/cocoapods/v/CSCardTransition.svg)](http://cocoapods.org/pods/CSCardTransition)
 ![Xcode 10.0+](https://img.shields.io/badge/Xcode-10.0%2B-blue.svg)
@@ -33,7 +35,7 @@ pod 'CSCardTransition'
 ```
 
 ### Manually
-Drag the files inside the CSCardTransition folder into your project.
+Drag the files inside the `CSCardTransition` folder into your project.
 
 ## Usage
 
@@ -143,10 +145,10 @@ extension YourViewController: CSCardViewPresenter {
 ```
 
 ### Good to know
-A `CSCardPresentedView` can also be a `CSCardViewPresenter`, that is what makes this library so powerful ;)
+A `CSCardPresentedView` can also be a `CSCardViewPresenter`, that is what makes this library so powerful 😉
 
 ## Informations
-
-This library is brought to you by <b>[Creastel](https://creastel.com)</b>.
-<br/>
+This library is brought to you by <b>[Creastel](https://creastel.com)</b>, French Digital Agency.
 You can reach us at [hello@creastel.com](mailto:hello@creastel.com).
+
+[![Github Banner - CSCardTransition](https://user-images.githubusercontent.com/25668948/149535873-d2b7496f-a613-479d-b7a0-f2ec335c330a.jpg)](https://creastel.com)
