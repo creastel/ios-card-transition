@@ -1,6 +1,6 @@
-![Github Banner - CSCardTransition](https://user-images.githubusercontent.com/25668948/149535108-b6777860-466e-4e23-9410-83bf0bbe57ab.jpg)
+![CSCardTransition_dark](https://user-images.githubusercontent.com/25668948/149791371-3d2024c2-5dcc-4338-bfa8-1cb0112ab2aa.png#gh-dark-mode-only)
+![CSCardTransition_light](https://user-images.githubusercontent.com/25668948/149791399-9f71b32a-d4af-47e6-a0a6-4985e469eff6.png#gh-light-mode-only)
 # CSCardTransition
-
 
 [![Version](https://img.shields.io/cocoapods/v/CSCardTransition.svg)](http://cocoapods.org/pods/CSCardTransition)
 ![Xcode 10.0+](https://img.shields.io/badge/Xcode-10.0%2B-blue.svg)
@@ -151,4 +151,4 @@ A `CSCardPresentedView` can also be a `CSCardViewPresenter`, that is what makes 
 This library is brought to you by <b>[Creastel](https://creastel.com)</b>, French Digital Agency.
 You can reach us at [hello@creastel.com](mailto:hello@creastel.com).
 
-[![Github Banner - CSCardTransition](https://user-images.githubusercontent.com/25668948/149535873-d2b7496f-a613-479d-b7a0-f2ec335c330a.jpg)](https://creastel.com)
+[![Github Banner - CSCardTransition](https://user-images.githubusercontent.com/25668948/149791677-5ade44e7-7e8b-491e-8910-c1907648e137.png)](https://creastel.com)
