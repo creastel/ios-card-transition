@@ -146,7 +146,8 @@ extension YourViewController: CSCardPresentedView {
     var cardTransitionEnabled: Bool { get }
         
     /// Called when the transition to this view controller just started.
-    func cardPresentedViewDidStartPresenting() {}
+    /// - Parameter cardView: The UIView used in the parent view controller to start the transitinon.
+    func cardPresentedViewDidStartPresenting(from cardView: UIView)
     /// Called when the transition to this view controller is currently in progress
     /// - Parameter progress: The current progress of the transition (between 0 and 1)
     func cardPresentedViewDidUpdatePresentingTransition(progress: CGFloat) {}
