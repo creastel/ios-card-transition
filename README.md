@@ -41,6 +41,53 @@ Drag the files inside the `CSCardTransition` folder into your project.
 
 After creating a _"Card Presenter"_ View Controller and your _"Presented Card"_ View Controller, you will simply need to follow this steps:
 
+### Swizzle your UINavigationController (Required step)
+
+Add the 3 following lines to your custom UINavigationController.
+
+``` swift
+import UIKit
+import CSCardTransition
+
+class YourNavigationController: UINavigationController, UINavigationControllerDelegate {
+    ...
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+         // 1/3
+        delegate = self
+    }
+    
+    func navigationController(
+        _ navigationController: UINavigationController,
+        animationControllerFor operation: UINavigationController.Operation,
+        from fromVC: UIViewController,
+        to toVC: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        // 2/3
+        return CSCardTransition.navigationController(
+            navigationController,
+            animationControllerFor: operation,
+            from: fromVC,
+            to: toVC
+        )
+    }
+    
+    func navigationController(
+        _ navigationController: UINavigationController,
+        interactionControllerFor animationController: UIViewControllerAnimatedTransitioning
+    ) -> UIViewControllerInteractiveTransitioning? {
+        // 3/3
+        return CSCardTransition.navigationController(
+            navigationController,
+            interactionControllerFor: animationController
+        )
+    }
+    
+    ...
+}
+```
+
 ### Card View Presenter (Required step)
 In the View Controller that serves as the view "Presenter", in other word, in the View Controller that contains the card to be expanded, you will need to add the `CSCardViewPresenter` protocol and define what `UIView` should be used as the card to be presented:
 ``` swift
