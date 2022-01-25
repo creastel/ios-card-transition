@@ -156,7 +156,7 @@ extension CSCardTransitionAnimation {
         }
         
         fromCardViewPresenter.cardViewPresenterDidStartDismissing()
-        toCardPresentedView.cardPresentedViewDidStartPresenting()
+        toCardPresentedView.cardPresentedViewDidStartPresenting(from: fromCard)
         
         animationStartTime = CACurrentMediaTime()
         displayLink.add(to: RunLoop.current, forMode: .common)

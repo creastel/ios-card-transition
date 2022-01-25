@@ -97,7 +97,7 @@ class SongPresentationViewController: UIViewController {
 
 extension SongPresentationViewController: CSCardPresentedView {
     
-    func cardPresentedViewDidStartPresenting() {
+    func cardPresentedViewDidStartPresenting(from cardView: UIView) {
         activateBigConstraint()
     }
     func cardPresentedViewDidUpdatePresentingTransition(progress: CGFloat) {
