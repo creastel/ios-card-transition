@@ -28,6 +28,10 @@ import UIKit
 
 public class CSCardTransition {
     
+    /// Change this static variable to true to slow down the
+    /// transition animations.
+    public static var debug = false
+    
     /// Returns the Card Transition Animation Controller if the transition
     /// is set up and enabled.
     /// Use this method to swizzle your Navigation Controller.

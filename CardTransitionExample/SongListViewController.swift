@@ -43,6 +43,8 @@ class SongListViewController: UIViewController {
             artist: "Jordan Derulo"
         )
         songCellView.didTouchUpInside = cellPressed
+        // Want to try debug mode? Use the following line:
+        // CSCardTransition.debug = true
     }
     
     // MARK: Private Methods

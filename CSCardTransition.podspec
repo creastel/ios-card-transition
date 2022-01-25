@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "CSCardTransition"
-  spec.version      = "0.9.1"
+  spec.version      = "0.9.2"
   spec.summary      = "CSCardTransition allows you to create wonderful transition animations like in the App Store."
   spec.module_name  = 'CSCardTransition'
   spec.swift_version = '5.0'

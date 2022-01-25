@@ -39,7 +39,9 @@ Drag the files inside the `CSCardTransition` folder into your project.
 
 ## Usage
 
-After creating a _"Card Presenter"_ View Controller and your _"Presented Card"_ View Controller, you will simply need to follow this steps:
+You can go through the example provided in this repo, and run it, to see how to implement beautiful transitions. You can also follow the following steps.
+
+After creating a _"Card Presenter"_ View Controller and your _"Presented Card"_ View Controller, you will need to follow this steps:
 
 ### Swizzle your UINavigationController (Required step)
 
@@ -145,9 +147,12 @@ extension YourViewController: CSCardPresentedView {
     /// A Boolean indicating whether or not the card transition should occur.
     var cardTransitionEnabled: Bool { get }
         
+    /// Called when the transition to this view controller is about to start.
+    /// - Parameter cardView: The UIView used in the parent view controller to start the transition.
+    func cardPresentedViewWillStartPresenting(from cardView: UIView)
     /// Called when the transition to this view controller just started.
-    /// - Parameter cardView: The UIView used in the parent view controller to start the transitinon.
-    func cardPresentedViewDidStartPresenting(from cardView: UIView)
+    /// Autolayout changes will automatically be animated here.
+    func cardPresentedViewDidStartPresenting()
     /// Called when the transition to this view controller is currently in progress
     /// - Parameter progress: The current progress of the transition (between 0 and 1)
     func cardPresentedViewDidUpdatePresentingTransition(progress: CGFloat) {}
@@ -174,6 +179,7 @@ You may want to customize you transition in the presenter by disabling/enabling 
 ``` swift
 extension YourViewController: CSCardViewPresenter {
     /// Called when the transition to the card view controller just started.
+    /// Autolayout changes will automatically be animated here.
     func cardViewPresenterDidStartDismissing() {}
     /// Called when the transition to the card view controller is currently in progress
     /// - Parameter progress: The current progress of the transition (between 0 and 1)
@@ -193,6 +199,13 @@ extension YourViewController: CSCardViewPresenter {
     /// Called when the transition back to this view controller is about to be completed.
     func cardViewPresenterWillEndPresenting() {}
 }
+```
+
+### Debug your transition
+The transition must be quick in production, but slow it down (to 1/10) during its development so you can easily see what is working and what still needs some improvements. You can enable debug mode by simply writting the following line anywhere in your code, before your transition happens.
+
+```swift
+CSCardTransition.debug = true
 ```
 
 ### Good to know

@@ -27,16 +27,17 @@
 import UIKit
 
 private enum CSCardTransitionConstants {
-    static let presentPositioningDuration: TimeInterval = 0.7
-    static let presentResizingDuration: TimeInterval = 0.8
-    static let presentStatusStyleUpdateDuration: TimeInterval = 0.3
-    static let dismissPositioningDuration: TimeInterval = 0.5
-    static let dismissResizingDuration: TimeInterval = 0.4
-    static let dismissBlurDuration: TimeInterval = 0.2
-    static let dismissStatusStyleUpdateDuration: TimeInterval = 0.3
-    static let cancelTransitionResizingDuration: TimeInterval = 0.3
-    static let backgroundColor: UIColor = UIColor.gray.withAlphaComponent(0.3)
-    static let preDismissingTransitionProgressPortion: CGFloat = 0.2
+    static var debugDurationMultiplicationFactor: TimeInterval { return 10 }
+    static var presentPositioningDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.7 : 0.7 }
+    static var presentResizingDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.8 : 0.8 }
+    static var presentStatusStyleUpdateDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.3 : 0.3 }
+    static var dismissPositioningDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.5 : 0.5 }
+    static var dismissResizingDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.4 : 0.4 }
+    static var dismissBlurDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.2 : 0.2 }
+    static var dismissStatusStyleUpdateDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.3 : 0.3 }
+    static var cancelTransitionResizingDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.3 : 0.3 }
+    static var backgroundColor: UIColor = UIColor.gray.withAlphaComponent(0.3)
+    static var preDismissingTransitionProgressPortion: CGFloat = 0.2
 }
 
 class CSCardTransitionAnimation: NSObject {
@@ -93,6 +94,8 @@ extension CSCardTransitionAnimation {
         let toFrame = toView.frame
         let fromCard = cardViewPresenterCard
         
+        toCardPresentedView.cardPresentedViewWillStartPresenting(from: fromCard)
+        
         let transitionContainer = UIView(frame: .zero)
         transitionContainer.addSubview(toView)
         container.addSubview(transitionContainer)
@@ -113,7 +116,7 @@ extension CSCardTransitionAnimation {
         toCardPresentedView.cardPresentedViewShouldUpdateBar(to: fromStatusBarStyle)
         
         var animationStartTime: CFTimeInterval = CACurrentMediaTime()
-        let animationDuration: CFTimeInterval = 0.3
+        let animationDuration: CFTimeInterval = min(CSCardTransitionConstants.presentPositioningDuration, CSCardTransitionConstants.presentResizingDuration)
         let animationDidUpdate = Action {
             let animationProgress = min(1, (CACurrentMediaTime() - animationStartTime) / animationDuration)
             let curvedProgress = log10(1 + animationProgress * 9)
@@ -156,7 +159,7 @@ extension CSCardTransitionAnimation {
         }
         
         fromCardViewPresenter.cardViewPresenterDidStartDismissing()
-        toCardPresentedView.cardPresentedViewDidStartPresenting(from: fromCard)
+        toCardPresentedView.cardPresentedViewDidStartPresenting()
         
         animationStartTime = CACurrentMediaTime()
         displayLink.add(to: RunLoop.current, forMode: .common)

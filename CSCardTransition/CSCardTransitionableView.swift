@@ -82,9 +82,11 @@ public protocol CSCardPresentedView: AnyObject {
     
     // Present the view with transition
     
-    /// Called when the transition to this view controller just started.
+    /// Called when the transition to this view controller is about to start.
     /// - Parameter cardView: The UIView used in the parent view controller to start the transitinon.
-    func cardPresentedViewDidStartPresenting(from cardView: UIView)
+    func cardPresentedViewWillStartPresenting(from cardView: UIView)
+    /// Called when the transition to this view controller just started.
+    func cardPresentedViewDidStartPresenting()
     /// Called when the transition to this view controller is currently in progress.
     /// - Parameter progress: The current progress of the transition (between 0 and 1)
     func cardPresentedViewDidUpdatePresentingTransition(progress: CGFloat)
@@ -132,7 +134,8 @@ public extension CSCardViewPresenter {
 }
 public extension CSCardPresentedView {
     var cardTransitionEnabled: Bool { true }
-    func cardPresentedViewDidStartPresenting(from cardView: UIView) {}
+    func cardPresentedViewWillStartPresenting(from cardView: UIView) {}
+    func cardPresentedViewDidStartPresenting() {}
     func cardPresentedViewWillEndPresenting() {}
     func cardPresentedViewDidUpdatePresentingTransition(progress: CGFloat) {}
     func cardPresentedViewWillStartDismissing() {}
