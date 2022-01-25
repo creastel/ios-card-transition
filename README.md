@@ -43,28 +43,32 @@ After creating a _"Card Presenter"_ View Controller and your _"Presented Card"_ 
 
 ### Swizzle your UINavigationController (Required step)
 
-Add the 3 following lines to your custom UINavigationController.
+Add the 4 following lines to your custom UINavigationController.
 
 ``` swift
 import UIKit
+// 1
 import CSCardTransition
 
-class YourNavigationController: UINavigationController, UINavigationControllerDelegate {
+class YourNavigationController: UINavigationController {
     ...
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-         // 1/3
+         // 2
         delegate = self
     }
-    
+    ...
+}
+
+extension YourNavigationController: UINavigationControllerDelegate {
+ 
     func navigationController(
         _ navigationController: UINavigationController,
         animationControllerFor operation: UINavigationController.Operation,
         from fromVC: UIViewController,
         to toVC: UIViewController
     ) -> UIViewControllerAnimatedTransitioning? {
-        // 2/3
+        // 3
         return CSCardTransition.navigationController(
             navigationController,
             animationControllerFor: operation,
@@ -77,14 +81,13 @@ class YourNavigationController: UINavigationController, UINavigationControllerDe
         _ navigationController: UINavigationController,
         interactionControllerFor animationController: UIViewControllerAnimatedTransitioning
     ) -> UIViewControllerInteractiveTransitioning? {
-        // 3/3
+        // 4
         return CSCardTransition.navigationController(
             navigationController,
             interactionControllerFor: animationController
         )
     }
     
-    ...
 }
 ```
 
