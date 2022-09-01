@@ -28,10 +28,6 @@ import UIKit
 
 public class CSCardTransition {
     
-    /// Change this static variable to true to slow down the
-    /// transition animations.
-    public static var debug = false
-    
     /// Returns the Card Transition Animation Controller if the transition
     /// is set up and enabled.
     /// Use this method to swizzle your Navigation Controller.
@@ -54,21 +50,18 @@ public class CSCardTransition {
         if
             operation == .push,
             let fromVC = fromVC as? CSCardViewPresenter,
-            let fromCard = fromVC.cardViewPresenterCard,
             let toVC = toVC as? CSCardPresentedView,
-            toVC.cardTransitionEnabled,
-            fromVC.cardViewPresenterCard != nil
+            fromVC.cardViewPresenterCard != nil,
+            toVC.cardTransitionEnabled
         {
-            return CSCardTransitionAnimation(operation: operation, interactor: toVC.cardTransitionInteractor, cardViewPresenterCard: fromCard)
+            return CSCardTransitionAnimation(operation: operation, interactor: toVC.cardTransitionInteractor)
         } else if
             operation == .pop,
-            let toVC = toVC as? CSCardViewPresenter,
-            let toCard = toVC.cardViewPresenterCard,
+            toVC is CSCardViewPresenter,
             let fromVC = fromVC as? CSCardPresentedView,
-            fromVC.cardTransitionEnabled,
-            toVC.cardViewPresenterCard != nil
+            fromVC.cardTransitionEnabled
         {
-            return CSCardTransitionAnimation(operation: operation, interactor: fromVC.cardTransitionInteractor, cardViewPresenterCard: toCard)
+            return CSCardTransitionAnimation(operation: operation, interactor: fromVC.cardTransitionInteractor)
         }
         return nil
     }
@@ -88,7 +81,7 @@ public class CSCardTransition {
         interactionControllerFor animationController: UIViewControllerAnimatedTransitioning
     ) -> UIViewControllerInteractiveTransitioning? {
 
-        guard let interactor = (navigationController.viewControllers.last as? CSCardPresentedView)?.cardTransitionInteractor else { return nil }
+        guard let interactor = (animationController as? CSCardTransitionAnimation)?.interactor else { return nil }
         return interactor.interactionInProgress ? interactor : nil
     }
 }

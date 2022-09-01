@@ -74,9 +74,11 @@ public protocol CSCardPresentedView: AnyObject {
     // MARK: Variables
     
     /// The CSCardTransitionInteractor used in your View Controller for the pop transition.
-    var cardTransitionInteractor: CSCardTransitionInteractor { get }
+    var cardTransitionInteractor: CSCardTransitionInteractor? { get }
     /// A Boolean indicating whether or not the card transition should occur.
     var cardTransitionEnabled: Bool { get }
+    /// A variable enabling you to customize the transition properties (durations, animation, ...)
+    var cardTransitionProperties: CSCardTransitionProperties { get }
     
     // MARK: Methods
     
@@ -134,6 +136,7 @@ public extension CSCardViewPresenter {
 }
 public extension CSCardPresentedView {
     var cardTransitionEnabled: Bool { true }
+    var cardTransitionProperties: CSCardTransitionProperties { return .normal }
     func cardPresentedViewWillStartPresenting(from cardView: UIView) {}
     func cardPresentedViewDidStartPresenting() {}
     func cardPresentedViewWillEndPresenting() {}

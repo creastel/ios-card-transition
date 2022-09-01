@@ -34,7 +34,7 @@ class SongLyricsViewController: UIViewController {
     
     // MARK: CSCardPresentedView Requirements
     
-    lazy var cardTransitionInteractor: CSCardTransitionInteractor = CSCardTransitionInteractor(viewController: self)
+    lazy var cardTransitionInteractor: CSCardTransitionInteractor? = CSCardTransitionInteractor(viewController: self)
     
     // MARK: @IBOutlets
     

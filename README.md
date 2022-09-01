@@ -108,7 +108,7 @@ In the View Controller that serves as the "Presented" card view, in other word, 
 class YourViewController: UIViewController {
     ...
     // To enable the drag gesture to pop out the card view and go back to the parent view controller.
-    lazy var cardTransitionInteractor: CSCardTransitionInteractor = CSCardTransitionInteractor(viewController: self)
+    lazy var cardTransitionInteractor: CSCardTransitionInteractor? = CSCardTransitionInteractor(viewController: self)
     ...
 }
 extension YourViewController: CSCardPresentedView {
@@ -201,11 +201,45 @@ extension YourViewController: CSCardViewPresenter {
 }
 ```
 
-### Debug your transition
-The transition must be quick in production, but slow it down (to 1/10) during its development so you can easily see what is working and what still needs some improvements. You can enable debug mode by simply writting the following line anywhere in your code, before your transition happens.
+### Customize your transition
+You can customize all of the properties below simply by providing a custom instance of CSCardTransitionProperties to the Presented View Controller. For instance:
 
 ```swift
-CSCardTransition.debug = true
+extension SongPresentationViewController: CSCardPresentedView {
+	var cardTransitionProperties: CSCardTransitionProperties { 
+		return CSCardTransitionProperties(
+			/// Presenting animation properties
+			presentPositioningDuration: <#T##TimeInterval#>, 
+			presentResizingDuration: <#T##TimeInterval#>, 
+			presentStatusStyleUpdateDuration: <#T##TimeInterval#>, 
+			/// Dismissing animation properties
+			dismissPositioningDuration: <#T##TimeInterval#>, 
+			dismissResizingDuration: <#T##TimeInterval#>, 
+			dismissBlurDuration: <#T##TimeInterval#>, 
+			dismissStatusStyleUpdateDuration: <#T##TimeInterval#>, 
+			/// Fade transition duration between presented card view and presenter card view
+			dismissFadeCardAnimationTime: <#T##TimeInterval#>, 
+			/// How far should the user swipe to dismiss the view
+			preDismissingTransitionProgressPortion: <#T##CGFloat#>, 
+			/// Cancel animation duration
+			cancelTransitionResizingDuration: <#T##TimeInterval#>, 
+			/// Blurred background color during transition
+			transitionBackgroundColor: <#T##UIColor#>
+		)
+	}
+}
+```
+**Note:** all of these properties have default values, so you can skip the ones you don't want to change in the instance creation.
+
+### Debug your transition
+The transition must be quick in production, but slow it down (to 1/10) during its development so you can easily see what is working and what still needs some improvements. You can enable debug mode by simply providing a debug instance of the CSCardTransitionProperties to the Presented View Controller.
+
+```swift
+extension SongPresentationViewController: CSCardPresentedView {
+	var cardTransitionProperties: CSCardTransitionProperties { 
+		return .debug
+	}
+}
 ```
 
 ### Good to know

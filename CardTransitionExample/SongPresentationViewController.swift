@@ -34,7 +34,7 @@ class SongPresentationViewController: UIViewController {
     
     // MARK: CSCardPresentedView Requirements
     
-    lazy var cardTransitionInteractor: CSCardTransitionInteractor = CSCardTransitionInteractor(viewController: self)
+    lazy var cardTransitionInteractor: CSCardTransitionInteractor? = CSCardTransitionInteractor(viewController: self)
     
     // MARK: @IBOutlets
     
@@ -96,6 +96,10 @@ class SongPresentationViewController: UIViewController {
 }
 
 extension SongPresentationViewController: CSCardPresentedView {
+    
+    var cardTransitionProperties: CSCardTransitionProperties {
+        return CSCardTransitionProperties(dismissFadeCardAnimationTime: 0.3)
+    }
     
     func cardPresentedViewDidStartPresenting() {
         // Layout changes are automatically animated when written here

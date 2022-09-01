@@ -1,5 +1,5 @@
 //
-//  CSCardTransitionAnimator.swift
+//  CSCardTransitionAnimation.swift
 //  CSCardTransition
 //
 //  Created by Jean Haberer on 02/12/2020.
@@ -26,42 +26,26 @@
 
 import UIKit
 
-private enum CSCardTransitionConstants {
-    static var debugDurationMultiplicationFactor: TimeInterval { return 10 }
-    static var presentPositioningDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.7 : 0.7 }
-    static var presentResizingDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.8 : 0.8 }
-    static var presentStatusStyleUpdateDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.3 : 0.3 }
-    static var dismissPositioningDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.5 : 0.5 }
-    static var dismissResizingDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.4 : 0.4 }
-    static var dismissBlurDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.2 : 0.2 }
-    static var dismissStatusStyleUpdateDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.3 : 0.3 }
-    static var cancelTransitionResizingDuration: TimeInterval { return CSCardTransition.debug ? debugDurationMultiplicationFactor * 0.3 : 0.3 }
-    static var backgroundColor: UIColor = UIColor.gray.withAlphaComponent(0.3)
-    static var preDismissingTransitionProgressPortion: CGFloat = 0.2
-}
-
 class CSCardTransitionAnimation: NSObject {
-    private let operationType: UINavigationController.Operation
-    private let interactor: CSCardTransitionInteractor
-    private let cardViewPresenterCard: UIView
+    let operationType: UINavigationController.Operation
+    let interactor: CSCardTransitionInteractor?
     
     init(operation: UINavigationController.Operation,
-         interactor: CSCardTransitionInteractor,
-         cardViewPresenterCard: UIView
+         interactor: CSCardTransitionInteractor?
     ) {
         self.operationType = operation
         self.interactor = interactor
-        self.cardViewPresenterCard = cardViewPresenterCard
     }
 }
 
 extension CSCardTransitionAnimation: UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        guard let presentedView = transitionContext?.viewController(forKey: .to) as? CSCardPresentedView else { return 0 }
         switch operationType {
         case .push:
-            return max(CSCardTransitionConstants.presentResizingDuration, CSCardTransitionConstants.presentPositioningDuration)
+            return max(presentedView.cardTransitionProperties.presentResizingDuration, presentedView.cardTransitionProperties.presentPositioningDuration)
         case .pop:
-            return max(CSCardTransitionConstants.dismissResizingDuration, CSCardTransitionConstants.dismissPositioningDuration)
+            return max(presentedView.cardTransitionProperties.dismissResizingDuration, presentedView.cardTransitionProperties.dismissPositioningDuration)
         default:
             return 0
         }
@@ -91,22 +75,24 @@ extension CSCardTransitionAnimation {
             let toView = transitionContext.view(forKey: .to)
         else { return }
         
-        let toFrame = toView.frame
-        let fromCard = cardViewPresenterCard
+        let transitionProperties = toCardPresentedView.cardTransitionProperties
         
-        toCardPresentedView.cardPresentedViewWillStartPresenting(from: fromCard)
+        let toFrame = toView.frame
         
         let transitionContainer = UIView(frame: .zero)
         transitionContainer.addSubview(toView)
         container.addSubview(transitionContainer)
         
+        let fromCard = fromCardViewPresenter.cardViewPresenterCard ?? UIView()
+        toCardPresentedView.cardPresentedViewWillStartPresenting(from: fromCard)
+        
         let absoluteFromCardFrame = (fromCard.superview ?? fromCard).convert(fromCard.frame, to: container)
-        let transformScaledRatio = (fromCard.layer.presentation()?.frame.width ?? 0) / fromCard.frame.width
         transitionContainer.frame = absoluteFromCardFrame
         toView.frame.size = absoluteFromCardFrame.size
         toView.frame.origin = .zero
         transitionContainer.layoutIfNeeded()
-        transitionContainer.transform = CGAffineTransform(scaleX: transformScaledRatio, y: transformScaledRatio)
+        transitionContainer.transform = fromCard.transform
+        toView.alpha = fromCard.alpha
         fromCard.alpha = 0
         
         let yDiff = toFrame.origin.y - absoluteFromCardFrame.origin.y
@@ -116,17 +102,22 @@ extension CSCardTransitionAnimation {
         toCardPresentedView.cardPresentedViewShouldUpdateBar(to: fromStatusBarStyle)
         
         var animationStartTime: CFTimeInterval = CACurrentMediaTime()
-        let animationDuration: CFTimeInterval = min(CSCardTransitionConstants.presentPositioningDuration, CSCardTransitionConstants.presentResizingDuration)
+        var firstAnimation = true
+        let animationDuration: CFTimeInterval = min(transitionProperties.presentPositioningDuration, transitionProperties.presentResizingDuration)
         let animationDidUpdate = Action {
+            if firstAnimation {
+                animationStartTime = CACurrentMediaTime()
+                firstAnimation = false
+            }
             let animationProgress = min(1, (CACurrentMediaTime() - animationStartTime) / animationDuration)
-            let curvedProgress = log10(1 + animationProgress * 9)
+            let curvedProgress = min((log10(1 + animationProgress * 29) / log10(30))*1.4, 1)
             DispatchQueue.main.async {
                 fromCardViewPresenter.cardViewPresenterDidUpdateDismissingTransition(progress: CGFloat(curvedProgress))
                 toCardPresentedView.cardPresentedViewDidUpdatePresentingTransition(progress: CGFloat(curvedProgress))
                 if curvedProgress > 0.8 && !statusBarStyleUpdated {
                     statusBarStyleUpdated = true
                     UIView.animate(
-                        withDuration: CSCardTransitionConstants.presentStatusStyleUpdateDuration,
+                        withDuration: transitionProperties.presentStatusStyleUpdateDuration,
                         animations: {
                             toCardPresentedView.cardPresentedViewShouldUpdateBar(to: toStatusBarStyle)
                         }
@@ -152,7 +143,7 @@ extension CSCardTransitionAnimation {
         var positionAnimatorHandler: ((Bool) -> ())?
         var sizeAnimatorHandler: ((Bool) -> ())?
         
-        if CSCardTransitionConstants.presentPositioningDuration > CSCardTransitionConstants.presentResizingDuration {
+        if transitionProperties.presentPositioningDuration > transitionProperties.presentResizingDuration {
             positionAnimatorHandler = completionHandler
         } else {
             sizeAnimatorHandler = completionHandler
@@ -164,8 +155,12 @@ extension CSCardTransitionAnimation {
         animationStartTime = CACurrentMediaTime()
         displayLink.add(to: RunLoop.current, forMode: .common)
         
+        UIView.animate(withDuration: 0.2) {
+            toView.alpha = 1
+        }
+        
         UIView.animate(
-            withDuration: CSCardTransitionConstants.presentPositioningDuration,
+            withDuration: transitionProperties.presentPositioningDuration,
             delay: 0,
             usingSpringWithDamping: 0.9,
             initialSpringVelocity: 0,
@@ -178,7 +173,7 @@ extension CSCardTransitionAnimation {
         )
         
         UIView.animate(
-            withDuration: CSCardTransitionConstants.presentResizingDuration,
+            withDuration: transitionProperties.presentResizingDuration,
             delay: 0,
             usingSpringWithDamping: 0.8,
             initialSpringVelocity: 0,
@@ -204,6 +199,8 @@ extension CSCardTransitionAnimation {
         else {
             return
         }
+        let transitionProperties = fromCardPresentedView.cardTransitionProperties
+        let originFrame = fromView.frame
         
         // Call the animation delegate
         toCardViewPresenter.cardViewPresenterWillStartPresenting()
@@ -212,24 +209,11 @@ extension CSCardTransitionAnimation {
         container.addSubview(toView)
         container.addSubview(fromView)
         
-        let toCardView = cardViewPresenterCard
-        toCardView.alpha = 0
-        
-        // Get the coordinates of the view inside the container
-        let originFrame = fromView.frame
-        let destinationFrame = CGRect(
-            origin: (toCardView.superview ?? toCardView).convert(toCardView.frame.origin, to: container),
-            size: toCardView.frame.size
-        )
-        
-        let yDiff = destinationFrame.origin.y - originFrame.origin.y
-        let xDiff = destinationFrame.origin.x - originFrame.origin.x
-        
         var preTransitionProgress: CGFloat = 0.0
         
         toCardViewPresenter.cardViewPresenterShouldUpdateBar(to: fromStatusBarStyle)
         
-        let startTransitionBlock = { [weak fromView, weak fromCardPresentedView, weak toCardViewPresenter, weak transitionContext] in
+        let startTransitionBlock = { [weak fromView, weak fromCardPresentedView, weak toCardViewPresenter, weak transitionContext, weak interactor] in
             guard let fromView = fromView, let transitionContext = transitionContext else { return }
             guard let fromCardPresentedView = fromCardPresentedView, let toCardViewPresenter = toCardViewPresenter else { return }
             
@@ -238,10 +222,10 @@ extension CSCardTransitionAnimation {
             fromCardPresentedView.cardPresentedViewDidStartDismissing()
             
             let animationStartTime: CFTimeInterval = CACurrentMediaTime()
-            let animationDuration: CFTimeInterval = min(CSCardTransitionConstants.dismissPositioningDuration, CSCardTransitionConstants.dismissResizingDuration)
+            let animationDuration: CFTimeInterval = min(transitionProperties.dismissPositioningDuration, transitionProperties.dismissResizingDuration)
             let animationDidUpdate = Action {
                 let animationProgress = min(CGFloat((CACurrentMediaTime() - animationStartTime) / animationDuration), 1)
-                let curvedProgress = log10(1 + animationProgress * 49) / log10(50)
+                let curvedProgress = min((log10(1 + animationProgress * 29) / log10(30))*1.4, 1)
                 let globalProgress = (1 - preTransitionProgress) * (min(curvedProgress, 1))
                 DispatchQueue.main.async {
                     fromCardPresentedView.cardPresentedViewDidUpdateDismissingTransition(progress: globalProgress + preTransitionProgress)
@@ -251,19 +235,58 @@ extension CSCardTransitionAnimation {
             let displayLink: CADisplayLink = CADisplayLink(target: animationDidUpdate, selector: #selector(animationDidUpdate.selector))
             displayLink.add(to: RunLoop.current, forMode: .common)
             
+            guard let toCardView = toCardViewPresenter.cardViewPresenterCard else {
+                UIView.animate(
+                    withDuration: transitionProperties.dismissPositioningDuration,
+                    delay: 0,
+                    usingSpringWithDamping: 1,
+                    initialSpringVelocity: 0,
+                    options: [.curveEaseIn],
+                    animations: {
+                        toCardViewPresenter.cardViewPresenterShouldUpdateBar(to: toStatusBarStyle)
+                        fromView.clipsToBounds = true
+                        fromView.frame.size = CGSize(width: 108, height: 108)
+                        fromView.layoutIfNeeded()
+                        fromView.transform = CGAffineTransform(translationX: container.frame.width/2-108/2, y: container.frame.height)
+                    },
+                    completion: { _ in
+                        toCardViewPresenter.cardViewPresenterWillEndPresenting()
+                        fromCardPresentedView.cardPresentedViewWillEndDismissing()
+                        fromCardPresentedView.cardPresentedViewShouldUpdateBar(to: fromStatusBarStyle)
+                        toCardViewPresenter.cardViewPresenterShouldUpdateBar(to: toStatusBarStyle)
+                        fromView.removeFromSuperview()
+                        displayLink.invalidate()
+                        interactor?.finish()
+                        transitionContext.completeTransition(true)
+                    }
+                )
+                return
+            }
+            toCardView.alpha = 0
+            
+            // Get the coordinates of the view inside the container
+            let destinationFrame = CGRect(
+                origin: (toCardView.superview ?? toCardView).convert(toCardView.frame.origin, to: toView),
+                size: toCardView.frame.size
+            )
+            
+            let yDiff = destinationFrame.origin.y - originFrame.origin.y
+            let xDiff = destinationFrame.origin.x - originFrame.origin.x
+            
             // Animation completion.
             let completionHandler: (Bool) -> Void = { _ in
                 toCardView.alpha = 1
                 fromView.layer.shadowOpacity = 0
                 toCardViewPresenter.cardViewPresenterWillEndPresenting()
                 fromCardPresentedView.cardPresentedViewWillEndDismissing()
-                UIView.animate(withDuration: 0.1, animations: {
+                UIView.animate(withDuration: transitionProperties.dismissFadeCardAnimationTime, animations: {
                     fromView.alpha = 0
                 }, completion: { _ in
                     fromCardPresentedView.cardPresentedViewShouldUpdateBar(to: fromStatusBarStyle)
                     toCardViewPresenter.cardViewPresenterShouldUpdateBar(to: toStatusBarStyle)
                     fromView.removeFromSuperview()
                     displayLink.invalidate()
+                    interactor?.finish()
                     transitionContext.completeTransition(true)
                 })
             }
@@ -273,20 +296,20 @@ extension CSCardTransitionAnimation {
             var positionAnimatorHandler: ((Bool) -> ())?
             var sizeAnimatorHandler: ((Bool) -> ())?
             
-            if CSCardTransitionConstants.dismissPositioningDuration > CSCardTransitionConstants.dismissResizingDuration {
+            if transitionProperties.dismissPositioningDuration > transitionProperties.dismissResizingDuration {
                 positionAnimatorHandler = completionHandler
             } else {
                 sizeAnimatorHandler = completionHandler
             }
             UIView.animate(
-                withDuration: CSCardTransitionConstants.dismissStatusStyleUpdateDuration, delay: 0,
+                withDuration: transitionProperties.dismissStatusStyleUpdateDuration, delay: 0,
                 options: .allowUserInteraction, animations: {
                     toCardViewPresenter.cardViewPresenterShouldUpdateBar(to: toStatusBarStyle)
                 }
             )
             
             UIView.animate(
-                withDuration: CSCardTransitionConstants.dismissPositioningDuration,
+                withDuration: transitionProperties.dismissPositioningDuration,
                 delay: 0,
                 usingSpringWithDamping: 0.7,
                 initialSpringVelocity: 0,
@@ -298,7 +321,7 @@ extension CSCardTransitionAnimation {
             )
             
             UIView.animate(
-                withDuration: CSCardTransitionConstants.dismissResizingDuration,
+                withDuration: transitionProperties.dismissResizingDuration,
                 delay: 0,
                 usingSpringWithDamping: 1,
                 initialSpringVelocity: 0,
@@ -312,28 +335,30 @@ extension CSCardTransitionAnimation {
             )
         }
         
-        if interactor.interactionInProgress {
+        if let interactor = interactor, interactor.interactionInProgress {
             let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
-            blurView.backgroundColor = CSCardTransitionConstants.backgroundColor
+            blurView.backgroundColor = transitionProperties.transitionBackgroundColor
             blurView.frame = fromView.bounds
             blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             toView.addSubview(blurView)
             
             interactor.cardTransitionInteractorDidFinish = {
-                UIView.animate(withDuration: CSCardTransitionConstants.dismissBlurDuration, animations: {
+                UIView.animate(withDuration: transitionProperties.dismissBlurDuration, animations: {
                     blurView.effect = .none
                     blurView.backgroundColor = .clear
                 }, completion: { bool in
                     blurView.removeFromSuperview()
                 })
-                startTransitionBlock()
+                DispatchQueue.main.async {
+                    startTransitionBlock()
+                }
             }
             
             interactor.cardTransitionInteractorDidCancel = { [weak fromView, weak fromCardPresentedView, weak toCardViewPresenter, weak transitionContext] in
                 fromCardPresentedView?.cardPresentedViewWillCancelDismissing()
                 toCardViewPresenter?.cardViewPresenterWillCancelPresenting()
                 UIView.animate(
-                    withDuration: CSCardTransitionConstants.cancelTransitionResizingDuration,
+                    withDuration: transitionProperties.cancelTransitionResizingDuration,
                     delay: 0,
                     usingSpringWithDamping: 0.9,
                     initialSpringVelocity: 0,
@@ -355,14 +380,16 @@ extension CSCardTransitionAnimation {
             
             interactor.cardTransitionInteractorDidUpdate = { [weak fromView, weak fromCardPresentedView, weak toCardViewPresenter] progress in
                 let curvedProgress = (atan(stepFactor * (progress - 1 / stepFactor)) * 2 / pi + 0.5)
-                preTransitionProgress = min(curvedProgress, 1) * CSCardTransitionConstants.preDismissingTransitionProgressPortion
+                preTransitionProgress = min(curvedProgress, 1) * transitionProperties.preDismissingTransitionProgressPortion
                 let scale = (1 - preTransitionProgress / 2)
                 fromCardPresentedView?.cardPresentedViewDidUpdateDismissingTransition(progress: preTransitionProgress)
                 toCardViewPresenter?.cardViewPresenterDidUpdatePresentingTransition(progress: preTransitionProgress)
                 fromView?.transform = CGAffineTransform(scaleX: scale, y: scale)
             }
         } else {
-            startTransitionBlock()
+            DispatchQueue.main.async {
+                startTransitionBlock()
+            }
         }
     }
 }

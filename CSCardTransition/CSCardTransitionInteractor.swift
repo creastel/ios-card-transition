@@ -33,6 +33,8 @@ private enum CSCardTransitionConstants {
 public class CSCardTransitionInteractor: UIPercentDrivenInteractiveTransition {
     
     // MARK: - Public Variables
+    public var ignoreTouchInViews: [UIView] = []
+    // MARK: - Library internal variables
     var interactionInProgress = false
     var shouldCompleteTransition = false
     var cardTransitionInteractorDidUpdate: ((_ progress: CGFloat) -> Void)?
@@ -82,29 +84,60 @@ public class CSCardTransitionInteractor: UIPercentDrivenInteractiveTransition {
         super.cancel()
     }
     
-    public override func finish() {
+    public func endTransition() {
         currentTranslationDirection = .zero
         cardTransitionInteractorDidFinish?()
+    }
+    
+    public override func finish() {
         super.finish()
     }
     
     // MARK: - Private functions
     
+    var transitionGestures: [UIGestureRecognizer] = []
+    
     private func setupGestures(in view: UIView) {
-        let swipeEdgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleGesture(_:)))
-        swipeEdgeGesture.edges = [.left, .right]
-        view.addGestureRecognizer(swipeEdgeGesture)
-        let verticalSwipeGesture = UIPanGestureRecognizer(target: self, action: #selector(handleGesture(_:)))
+        let swipeEdgeLeftGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgeGesture(_:)))
+        swipeEdgeLeftGesture.edges = .left
+        swipeEdgeLeftGesture.delegate = self
+        view.addGestureRecognizer(swipeEdgeLeftGesture)
+        transitionGestures.append(swipeEdgeLeftGesture)
+        let swipeEdgeRightGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgeGesture(_:)))
+        swipeEdgeRightGesture.edges = .right
+        swipeEdgeRightGesture.delegate = self
+        view.addGestureRecognizer(swipeEdgeRightGesture)
+        transitionGestures.append(swipeEdgeRightGesture)
+        let verticalSwipeGesture = UIPanGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
         verticalSwipeGesture.minimumNumberOfTouches = 0
+        verticalSwipeGesture.delegate = self
         view.addGestureRecognizer(verticalSwipeGesture)
+        transitionGestures.append(verticalSwipeGesture)
         #if targetEnvironment(macCatalyst)
         if #available(macCatalyst 13.4, *) {
             verticalSwipeGesture.allowedScrollTypesMask = .continuous
         }
         #endif
     }
+    
+    @objc private func handleEdgeGesture(_ gestureRecognizer: UIScreenEdgePanGestureRecognizer) {
+        handleGesture(gestureRecognizer)
+    }
 
-    @objc private func handleGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc private func handleSwipeGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
+        // Check if gesture did not started on a disabling view
+        if gestureRecognizer.state == .began {
+            for disablingView in ignoreTouchInViews {
+                if disablingView.bounds.contains(gestureRecognizer.location(in: disablingView)) {
+                    gestureRecognizer.state = .failed
+                    return
+                }
+            }
+        }
+        handleGesture(gestureRecognizer)
+    }
+    
+    private func handleGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
         guard let view = gestureRecognizer.view?.superview else { return }
         let translation = gestureRecognizer.translation(in: view)
         let xPos = translation.x
@@ -137,7 +170,7 @@ public class CSCardTransitionInteractor: UIPercentDrivenInteractiveTransition {
         case .ended:
             interactionInProgress = false
             if shouldCompleteTransition {
-                finish()
+                endTransition()
             } else {
                 cancel()
             }
@@ -167,5 +200,25 @@ public class CSCardTransitionInteractor: UIPercentDrivenInteractiveTransition {
         DispatchQueue.main.async {
             self.impactFeedbackgenerator?.impactOccurred()
         }
+    }
+}
+
+extension CSCardTransitionInteractor: UIGestureRecognizerDelegate {
+    
+    public func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        return transitionGestures.contains(otherGestureRecognizer)
+    }
+    
+    public func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        if gestureRecognizer is UIScreenEdgePanGestureRecognizer && otherGestureRecognizer is UIPanGestureRecognizer {
+            return true
+        }
+        return false
     }
 }
