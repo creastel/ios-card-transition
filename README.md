@@ -16,14 +16,15 @@ It works side by side with your navigation controller, and ensure that you only 
 <table>
   <tr>
     <td><a href="https://github.com/Creastel/CSCardTransition">Library Example</a></td>
-     <td><a href="https://creas.tel/ontime">On Time - Available on the App Store</a></td>
+     <td><a href="https://creas.tel/ontime">On Time<br/>Available for iOS</a></td>
+     <td><a href="https://creas.tel/mytoolbox">My Toolbox<br/>Available for iOS and MacOS</a></td>
   </tr>
   <tr>
     <td><img src="https://user-images.githubusercontent.com/25668948/148649687-4dbd1371-89f4-4943-a619-d89b45168925.gif" width=270></td>
     <td><img src="https://user-images.githubusercontent.com/25668948/148735697-cfff7415-7969-4f18-a510-3101519705c6.gif" width=270></td>
+    <td><img src="https://user-images.githubusercontent.com/25668948/187915754-78590eb3-e48c-42d7-a05e-076771086164.gif" width=270></td>
   </tr>
 </table>
-
 
 ## Installation
 
@@ -205,26 +206,26 @@ extension YourViewController: CSCardViewPresenter {
 You can customize all of the properties below simply by providing a custom instance of CSCardTransitionProperties to the Presented View Controller. For instance:
 
 ```swift
-extension SongPresentationViewController: CSCardPresentedView {
+extension YourViewController: CSCardPresentedView {
 	var cardTransitionProperties: CSCardTransitionProperties { 
 		return CSCardTransitionProperties(
 			/// Presenting animation properties
-			presentPositioningDuration: <#T##TimeInterval#>, 
-			presentResizingDuration: <#T##TimeInterval#>, 
-			presentStatusStyleUpdateDuration: <#T##TimeInterval#>, 
+			presentPositioningDuration: TimeInterval, 
+			presentResizingDuration: TimeInterval, 
+			presentStatusStyleUpdateDuration: TimeInterval, 
 			/// Dismissing animation properties
-			dismissPositioningDuration: <#T##TimeInterval#>, 
-			dismissResizingDuration: <#T##TimeInterval#>, 
-			dismissBlurDuration: <#T##TimeInterval#>, 
-			dismissStatusStyleUpdateDuration: <#T##TimeInterval#>, 
+			dismissPositioningDuration: TimeInterval, 
+			dismissResizingDuration: TimeInterval, 
+			dismissBlurDuration: TimeInterval, 
+			dismissStatusStyleUpdateDuration: TimeInterval, 
 			/// Fade transition duration between presented card view and presenter card view
-			dismissFadeCardAnimationTime: <#T##TimeInterval#>, 
+			dismissFadeCardAnimationTime: TimeInterval, 
 			/// How far should the user swipe to dismiss the view
-			preDismissingTransitionProgressPortion: <#T##CGFloat#>, 
+			preDismissingTransitionProgressPortion: CGFloat, 
 			/// Cancel animation duration
-			cancelTransitionResizingDuration: <#T##TimeInterval#>, 
+			cancelTransitionResizingDuration: TimeInterval, 
 			/// Blurred background color during transition
-			transitionBackgroundColor: <#T##UIColor#>
+			transitionBackgroundColor: UIColor
 		)
 	}
 }
@@ -235,7 +236,7 @@ extension SongPresentationViewController: CSCardPresentedView {
 The transition must be quick in production, but slow it down (to 1/10) during its development so you can easily see what is working and what still needs some improvements. You can enable debug mode by simply providing a debug instance of the CSCardTransitionProperties to the Presented View Controller.
 
 ```swift
-extension SongPresentationViewController: CSCardPresentedView {
+extension YourViewController: CSCardPresentedView {
 	var cardTransitionProperties: CSCardTransitionProperties { 
 		return .debug
 	}
